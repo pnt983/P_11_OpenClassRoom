@@ -81,6 +81,7 @@ def purchasePlaces():
         if placesRequired > 0 and placesRequired <= 12:
             if competition_date > today_date:
                 competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+                club["points"] = int(club["points"]) - placesRequired
                 flash('Great-booking complete!')
             else:
                  flash("The competition is past, your reservation is not valid.")
