@@ -86,3 +86,21 @@ def test_purchasePlaces_less_than_12_places(client):
     data = response.data.decode()
 
     assert data.find ("You can not redeem less than 1 and more than 12 points by club.") != -1
+
+def test_purchasePlaces_old_competition(client, monkeypatch, clubs_fixture, competitions_fixture):
+    monkeypatch.setattr(server, 'clubs', clubs_fixture)
+    monkeypatch.setattr(server, 'competitions', competitions_fixture)
+    response = client.post('/purchasePlaces', data={'club': 'Simply Lift', 'competition': 'Fall Classic', 'places': 1})
+
+    data = response.data.decode()
+
+    assert data.find ("The competition is past, your reservation is not valid.") != -1
+
+def test_purchasePlaces_good_date_competition(client, monkeypatch, clubs_fixture, competitions_fixture):
+    monkeypatch.setattr(server, 'clubs', clubs_fixture)
+    monkeypatch.setattr(server, 'competitions', competitions_fixture)
+    response = client.post('/purchasePlaces', data={'club': 'Simply Lift', 'competition': 'Competition Test Date', 'places': 1})
+
+    data = response.data.decode()
+
+    assert data.find ("Great-booking complete!") != -1
