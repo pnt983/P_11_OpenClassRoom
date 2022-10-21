@@ -104,3 +104,22 @@ def test_purchasePlaces_good_date_competition(client, monkeypatch, clubs_fixture
     data = response.data.decode()
 
     assert data.find ("Great-booking complete!") != -1
+
+def test_purchasePlaces_points_club_change(client, monkeypatch, clubs_fixture, competitions_fixture):
+    club = {
+        "name":"Simply Lift",
+        "email":"john@simplylift.co",
+        "points":"13"
+    }
+
+    monkeypatch.setattr(server, 'clubs', clubs_fixture)
+    monkeypatch.setattr(server, 'competitions', competitions_fixture)
+    response = client.post('/purchasePlaces', data={'club': 'Simply Lift', 'competition': 'Competition Test Date', 'places': 5})
+
+    data = response.data.decode()
+
+    club_points = int(club['points'])
+    placesRequired = 5
+    calcul = club_points - placesRequired
+    expected_value = f'Points available: {str(calcul)}'
+    assert data.find(expected_value) != -1
