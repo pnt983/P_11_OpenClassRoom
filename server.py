@@ -5,6 +5,9 @@ from flask import Flask,render_template,request,redirect,flash,url_for
 class ClubNotFound(Exception):
     pass
 
+class CompetitionNotFound(Exception):
+    pass
+
 def loadClubs():
     with open('clubs.json') as c:
          listOfClubs = json.load(c)['clubs']
@@ -28,6 +31,18 @@ def get_club(email):
         if email == club.get('email'):
             return club
     raise ClubNotFound
+
+def get_club_by_name(club):
+    for c in clubs:
+        if club == c.get('name'):
+            return c
+    raise ClubNotFound
+
+def get_competition_by_name(competition):
+    for compet in competitions:
+        if competition == compet.get('name'):
+            return compet
+    raise CompetitionNotFound
 
 @app.route('/')
 def index():
@@ -56,11 +71,14 @@ def book(competition,club):
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
+    competition = get_competition_by_name(request.form['competition'])
+    club = get_club_by_name(request.form['club'])
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    flash('Great-booking complete!')
+    if int(club["points"]) >= placesRequired:
+        competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+        flash('Great-booking complete!')
+    else:
+        flash('You can not redeem more points than available.')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
