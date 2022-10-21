@@ -75,8 +75,11 @@ def purchasePlaces():
     club = get_club_by_name(request.form['club'])
     placesRequired = int(request.form['places'])
     if int(club["points"]) >= placesRequired:
-        competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-        flash('Great-booking complete!')
+        if placesRequired > 0 and placesRequired <= 12:
+            competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+            flash('Great-booking complete!')
+        else:
+            flash("You can not redeem less than 1 and more than 12 points by club.")
     else:
         flash('You can not redeem more points than available.')
     return render_template('welcome.html', club=club, competitions=competitions)
