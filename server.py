@@ -1,5 +1,6 @@
 import json
 from flask import Flask,render_template,request,redirect,flash,url_for
+from datetime import datetime
 
 
 class ClubNotFound(Exception):
@@ -74,10 +75,15 @@ def purchasePlaces():
     competition = get_competition_by_name(request.form['competition'])
     club = get_club_by_name(request.form['club'])
     placesRequired = int(request.form['places'])
+    today_date = datetime.now()
+    competition_date = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
     if int(club["points"]) >= placesRequired:
         if placesRequired > 0 and placesRequired <= 12:
-            competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-            flash('Great-booking complete!')
+            if competition_date > today_date:
+                competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+                flash('Great-booking complete!')
+            else:
+                 flash("The competition is past, your reservation is not valid.")
         else:
             flash("You can not redeem less than 1 and more than 12 points by club.")
     else:
