@@ -2,6 +2,9 @@ import json
 from flask import Flask,render_template,request,redirect,flash,url_for
 
 
+class ClubNotFound(Exception):
+    pass
+
 def loadClubs():
     with open('clubs.json') as c:
          listOfClubs = json.load(c)['clubs']
@@ -20,13 +23,23 @@ app.secret_key = 'something_special'
 competitions = loadCompetitions()
 clubs = loadClubs()
 
+def get_club(email):
+    for club in clubs:
+        if email == club.get('email'):
+            return club
+    raise ClubNotFound
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
+    try:
+        club = get_club(request.form['email'])
+    except ClubNotFound:
+        flash("L'email n'existe pas, veuillez rééssayer.")
+        return redirect(url_for('index'))
     return render_template('welcome.html',club=club,competitions=competitions)
 
 
