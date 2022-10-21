@@ -70,3 +70,19 @@ def test_purchasePlaces_bad_asking_places(client):
     data = response.data.decode()
 
     assert data.find('You can not redeem more points than available.') != -1
+
+def test_purchasePlaces_more_than_12_places(client):
+    response= client.post('/purchasePlaces',data={'club': "Simply Lift", 
+                                                  "competition": 'Spring Festival', "places": 13})
+
+    data = response.data.decode()
+
+    assert data.find ("You can not redeem less than 1 and more than 12 points by club.") != -1
+
+def test_purchasePlaces_less_than_12_places(client):
+    response= client.post('/purchasePlaces',data={'club': "Simply Lift", 
+                                                  "competition": 'Spring Festival', "places": 0})
+
+    data = response.data.decode()
+
+    assert data.find ("You can not redeem less than 1 and more than 12 points by club.") != -1
