@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Points by team | GUDLFT </title>
+</head>
+<body>
+    <h1>Points by team | GUDLFT</h1>
+    <ul>
+       {% for club in clubs %}
+            <li> Club name: {{club.name}}</li>
+            <li>Points available: {{club['points']}}</li>
+            <p></p>
+        {% endfor %}
+    </ul>
+    <button onclick="window.location.href = 'http://127.0.0.1:5000/';">Retour</button>
+</body>
+</html>

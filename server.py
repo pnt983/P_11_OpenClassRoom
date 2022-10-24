@@ -91,9 +91,10 @@ def purchasePlaces():
         flash('You can not redeem more points than available.')
     return render_template('welcome.html', club=club, competitions=competitions)
 
-
-# TODO: Add route for points display
-
+@app.route('/displayPoints',methods=['GET'])
+def display_points():
+    clubs = loadClubs()
+    return render_template('points_by_team.html', clubs=clubs)
 
 @app.route('/logout')
 def logout():
