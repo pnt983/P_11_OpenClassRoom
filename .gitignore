@@ -132,5 +132,7 @@ dmypy.json
 .DS_Store
 .DS_Store/
 pyvenv.cfg
+.pyvenv.cfg
 .gitignore
 bin
+.bin
