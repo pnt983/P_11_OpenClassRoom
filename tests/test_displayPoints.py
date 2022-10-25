@@ -1,9 +1,11 @@
-import pytest
 import server
 
 
 def test_display_points_good_response(client, monkeypatch, clubs_fixture):
-
+    """
+    When display_points
+    Then points_by_team is display
+    """
     monkeypatch.setattr(server, 'clubs', clubs_fixture)
     response = client.get('/displayPoints')
     data = response.data.decode()
