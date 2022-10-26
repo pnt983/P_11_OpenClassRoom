@@ -109,6 +109,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.bin
+bin/
+
 
 # Spyder project settings
 .spyderproject
@@ -128,7 +131,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+DS_Store/
 .DS_Store
 .DS_Store/
 pyvenv.cfg
@@ -136,3 +139,4 @@ pyvenv.cfg
 .gitignore
 bin
 .bin
+report_1666792336.97104.html
