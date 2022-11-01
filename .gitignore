@@ -136,7 +136,4 @@ DS_Store/
 .DS_Store/
 pyvenv.cfg
 .pyvenv.cfg
-.gitignore
-bin
-.bin
 report_1666792336.97104.html

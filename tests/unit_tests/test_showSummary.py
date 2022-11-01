@@ -1,5 +1,4 @@
 import pytest
-import server
 from server import ClubNotFound, get_club
 
 def test_email_not_found():

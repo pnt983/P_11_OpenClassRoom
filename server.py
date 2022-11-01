@@ -39,10 +39,10 @@ def get_club_by_name(club):
             return c
     raise ClubNotFound
 
-def get_competition_by_name(competition):
-    for compet in competitions:
-        if competition == compet.get('name'):
-            return compet
+def get_competition_by_name(competition_name):
+    for competition in competitions:
+        if competition_name == competition.get('name'):
+            return competition
     raise CompetitionNotFound
 
 @app.route('/')
@@ -63,8 +63,13 @@ def showSummary():
 def book(competition,club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
+    max_points_club = 12
+    if int(foundClub['points']) < 12:
+        max_points_club = foundClub['points']
     if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
+        print('max points', max_points_club)
+        return render_template('booking.html',club=foundClub,competition=foundCompetition,
+                               max_points_club=max_points_club)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)

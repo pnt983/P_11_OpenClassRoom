@@ -21,13 +21,17 @@ def test_get_club_by_bad_name():
     with pytest.raises(ClubNotFound):
         get_club_by_name('BadNameClub')
 
-def test_get_competition_by_name(competitions_fixture):
+def test_get_competition_by_name(monkeypatch, competitions_fixture):
     """
     Given a name existing
     When get_competition_by_name is calling
     Then return competition
     """
-    competition = get_competition_by_name(competitions_fixture[0]['name'])
+    competition_name = 'Spring Festival'
+    monkeypatch.setattr(server, 'competitions', competitions_fixture)
+
+    competition = get_competition_by_name(competition_name)
+    assert competition["name"] == 'Spring Festival'
     assert competition["date"] == '2020-03-27 10:00:00'
 
 def test_get_competition_by_bad_name():
