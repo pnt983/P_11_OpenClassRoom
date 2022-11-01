@@ -67,7 +67,6 @@ def book(competition,club):
     if int(foundClub['points']) < 12:
         max_points_club = foundClub['points']
     if foundClub and foundCompetition:
-        print('max points', max_points_club)
         return render_template('booking.html',club=foundClub,competition=foundCompetition,
                                max_points_club=max_points_club)
     else:
