@@ -1,6 +1,5 @@
 
 
-
 def test_showSummary(client):
     """
     Given good email
